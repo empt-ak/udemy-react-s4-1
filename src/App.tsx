@@ -1,4 +1,5 @@
 import Header from './components/Header/Header.tsx'
+import Player from './components/Player/Player.tsx'
 
 const App = () => {
 
@@ -8,8 +9,8 @@ const App = () => {
       <main>
         <div id="game-container">
           <ol id="players">
-            <li><span className="player-name">player1</span><span className="player-symbol">X</span></li>
-            <li><span className="player-name">player2</span><span className="player-symbol">O</span></li>
+            <Player name="Player 1" symbol="X" />
+            <Player name="Player 2" symbol="O" />
           </ol>
 
           game board
