@@ -14,12 +14,11 @@ const Player = ({ initialName, symbol, isActive, nameChanged }: PlayerProps) => 
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const onClickHandler = () => {
+    setIsEditing(previous => !previous)
+
     if(isEditing) {
       nameChanged(symbol, name)
     }
-    setIsEditing(previous => !previous)
-
-
   }
 
   const onNameChangeHandler = (x: FormEvent<HTMLInputElement>) => {

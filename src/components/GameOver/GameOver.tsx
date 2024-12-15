@@ -1,16 +1,14 @@
-import { SymbolType } from '../../models/symbol-type.ts'
-
 export interface GameOverProps {
-  symbol: SymbolType | null
+  name: string | null
   resetClicked: () => void
 }
 
-const GameOver = ({symbol, resetClicked}: GameOverProps) => {
+const GameOver = ({ name, resetClicked }: GameOverProps) => {
   return (
     <div id="game-over">
-     <h2>Game over !</h2>
-      {symbol && <p>{symbol} has won</p>}
-      {!symbol && <p>It's a draw</p>}
+      <h2>Game over !</h2>
+      {name && <p>{name} has won</p>}
+      {!name && <p>It's a draw</p>}
       <button onClick={resetClicked}>Rematch!</button>
     </div>
   )

@@ -39,7 +39,7 @@ const App = () => {
     gameBoard[square.row][square.col] = symbol
   }
 
-  let winner: SymbolType | null = null
+  let winner: string | null = null
   for (const combination of WINNING_COMBINATIONS) {
     const firstSquare = gameBoard[combination[0].row][combination[0].col]
     const secondSquare = gameBoard[combination[1].row][combination[1].col]
@@ -48,7 +48,7 @@ const App = () => {
     if (firstSquare &&
       firstSquare === secondSquare &&
       firstSquare === thirdSquare) {
-      winner = firstSquare
+      winner = players[firstSquare]
       break
     }
   }
@@ -90,7 +90,7 @@ const App = () => {
             <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'} nameChanged={handlePlayerNameChange} />
           </ol>
 
-          {(winner || hasDraw) && <GameOver symbol={winner} resetClicked={restartGame} />}
+          {(winner || hasDraw) && <GameOver name={winner} resetClicked={restartGame} />}
           <GameBoard board={gameBoard} onSelectSquare={handleSelectSquare} />
         </div>
 
