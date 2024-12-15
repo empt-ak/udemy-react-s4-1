@@ -28,7 +28,7 @@ const GameBoard = ({onSelectSquare, gameTurns} : GameBoardProps) => {
             {
               row.map((cell, c) => {
                 return (<li key={'c-' + c}>
-                  <button onClick={() => onSelectSquare(r, c)}>
+                  <button onClick={() => onSelectSquare(r, c)} disabled={!!cell}>
                     {cell}
                   </button>
                 </li>)
