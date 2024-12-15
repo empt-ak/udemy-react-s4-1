@@ -1,25 +1,29 @@
 import { useState } from 'react'
+import { SymbolType } from '../../symbol-type.ts'
 
 interface GameBoardProps {
-  symbol: string
+  activeSymbol: SymbolType
+  onSelectSquare: () => void
 }
 
-const initialGameBoard: (string | null)[][] = [
+const initialGameBoard: (SymbolType | null)[][] = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ]
-const GameBoard = () => {
-  const [board, setBoard] = useState<(string | null)[][]>(initialGameBoard)
+const GameBoard = ({onSelectSquare, activeSymbol} : GameBoardProps) => {
+  const [board, setBoard] = useState<(SymbolType | null)[][]>(initialGameBoard)
 
   const onClickHandler = (x: number, y: number) => {
     setBoard(previous => {
       const next = [...previous.map(oldRow => [...oldRow])]
 
-      next[x][y] = 'X'
+      next[x][y] = activeSymbol
 
       return next
     })
+
+    onSelectSquare()
   }
 
   return (

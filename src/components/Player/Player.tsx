@@ -1,11 +1,13 @@
 import { FormEvent, useState } from 'react'
+import { SymbolType } from '../../symbol-type.ts'
 
 export interface PlayerProps {
   initialName: string
-  symbol: string
+  symbol: SymbolType
+  isActive: boolean
 }
 
-const Player = ({ initialName, symbol }: PlayerProps) => {
+const Player = ({ initialName, symbol, isActive }: PlayerProps) => {
   const [name, setName] = useState<string>(initialName)
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -19,7 +21,7 @@ const Player = ({ initialName, symbol }: PlayerProps) => {
   }
 
   return (
-    <li>
+    <li className={isActive ? 'active' : undefined}>
       <span className="player">
         {isEditing
           ? <input type="text" required value={name} onChange={onNameChangeHandler} />
