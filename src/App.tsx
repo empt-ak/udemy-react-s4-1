@@ -8,11 +8,19 @@ import { GameTurn } from './models/game-turn.ts'
 import { WINNING_COMBINATIONS } from './data.ts'
 import GameOver from './components/GameOver/GameOver.tsx'
 
-const initialGameBoard: (SymbolType | null)[][] = [
+type Board = (SymbolType | null)[][]
+type Players = Record<SymbolType, string>
+
+const INITIAL_BOARD: Board = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ]
+
+const INITIAL_PLAYERS: Players = {
+  'X': 'Player1',
+  'O': 'Player2',
+}
 
 const getCurrentPlayer = (turns: GameTurn[]): SymbolType => {
   if (turns.length && turns[0].symbol === 'X') {
@@ -22,37 +30,41 @@ const getCurrentPlayer = (turns: GameTurn[]): SymbolType => {
   return 'X'
 }
 
-const App = () => {
-  const [players, setPlayers] = useState<Record<SymbolType, string>>({
-    'X': 'Player1',
-    'O': 'Player2',
-  })
+const determineWinner = (board: Board, players: Players): string | null => {
 
-  const [gameTurns, setGameTurns] = useState<GameTurn[]>([])
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstSquare = board[combination[0].row][combination[0].col]
+    const secondSquare = board[combination[1].row][combination[1].col]
+    const thirdSquare = board[combination[2].row][combination[2].col]
 
-  const activePlayer = getCurrentPlayer(gameTurns)
-  const gameBoard = [...initialGameBoard.map(e => [...e])]
+    if (firstSquare && firstSquare === secondSquare && firstSquare === thirdSquare) {
+      return players[firstSquare]
+    }
+  }
 
-  for (const turn of gameTurns) {
+  return null
+}
+
+const createGameBoard = (turns: GameTurn[]): Board => {
+  const gameBoard = [...INITIAL_BOARD.map(e => [...e])]
+
+  for (const turn of turns) {
     const { square, symbol } = turn
 
     gameBoard[square.row][square.col] = symbol
   }
 
-  let winner: string | null = null
-  for (const combination of WINNING_COMBINATIONS) {
-    const firstSquare = gameBoard[combination[0].row][combination[0].col]
-    const secondSquare = gameBoard[combination[1].row][combination[1].col]
-    const thirdSquare = gameBoard[combination[2].row][combination[2].col]
+  return gameBoard
+}
 
-    if (firstSquare &&
-      firstSquare === secondSquare &&
-      firstSquare === thirdSquare) {
-      winner = players[firstSquare]
-      break
-    }
-  }
+const App = () => {
+  const [players, setPlayers] = useState<Players>(INITIAL_PLAYERS)
 
+  const [gameTurns, setGameTurns] = useState<GameTurn[]>([])
+
+  const activePlayer = getCurrentPlayer(gameTurns)
+  const gameBoard = createGameBoard(gameTurns)
+  const winner = determineWinner(gameBoard, players)
   const hasDraw = !winner && gameTurns.length === 9
 
   const handleSelectSquare = (row: number, col: number) => {
@@ -86,8 +98,8 @@ const App = () => {
       <main>
         <div id="game-container">
           <ol id="players" className="highlight-player">
-            <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'} nameChanged={handlePlayerNameChange} />
-            <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'} nameChanged={handlePlayerNameChange} />
+            <Player initialName={INITIAL_PLAYERS.X} symbol="X" isActive={activePlayer === 'X'} nameChanged={handlePlayerNameChange} />
+            <Player initialName={INITIAL_PLAYERS.O} symbol="O" isActive={activePlayer === 'O'} nameChanged={handlePlayerNameChange} />
           </ol>
 
           {(winner || hasDraw) && <GameOver name={winner} resetClicked={restartGame} />}
