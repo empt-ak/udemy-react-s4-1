@@ -5,6 +5,13 @@ import { useState } from 'react'
 import { SymbolType } from './models/symbol-type.ts'
 import Log from './components/Log/Log.tsx'
 import { GameTurn } from './models/game-turn.ts'
+import { WINNING_COMBINATIONS } from './data.ts'
+
+const initialGameBoard: (SymbolType | null)[][] = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+]
 
 const getCurrentPlayer = (turns: GameTurn[]) : SymbolType => {
   if(turns.length && turns[0].symbol === 'X') {
@@ -18,6 +25,18 @@ const App = () => {
   const [gameTurns, setGameTurns] = useState<GameTurn[]>([])
 
   const activePlayer = getCurrentPlayer(gameTurns)
+
+  const gameBoard = initialGameBoard
+
+  for (const turn of gameTurns) {
+    const {square, symbol} = turn
+
+    gameBoard[square.row][square.col] = symbol
+  }
+
+  for(const combination of WINNING_COMBINATIONS) {
+    //const firstSquare= gameBoard[combination]
+  }
 
   const handleSelectSquare = (row: number, col: number) => {
     setGameTurns(previous => {
@@ -44,7 +63,7 @@ const App = () => {
             <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'}/>
           </ol>
 
-          <GameBoard gameTurns={gameTurns} onSelectSquare={handleSelectSquare}/>
+          <GameBoard board={gameBoard} onSelectSquare={handleSelectSquare}/>
         </div>
 
         <Log turns={gameTurns}/>

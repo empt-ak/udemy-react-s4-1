@@ -1,28 +1,15 @@
 import { SymbolType } from '../../models/symbol-type.ts'
-import { GameTurn } from '../../models/game-turn.ts'
 
 interface GameBoardProps {
-  gameTurns: GameTurn[]
   onSelectSquare: (row: number, column: number) => void
+  board: (SymbolType | null)[][]
 }
 
-const initialGameBoard: (SymbolType | null)[][] = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
-]
-const GameBoard = ({onSelectSquare, gameTurns} : GameBoardProps) => {
-  const gameBoard = initialGameBoard
 
-  for (const turn of gameTurns) {
-    const {square, symbol} = turn
-
-    gameBoard[square.row][square.col] = symbol
-  }
-
+const GameBoard = ({ onSelectSquare, board }: GameBoardProps) => {
   return (
     <ol id="game-board">
-      {gameBoard.map((row, r) => {
+      {board.map((row, r) => {
         return <li key={'r-' + r}>
           <ol>
             {
