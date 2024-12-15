@@ -1,5 +1,5 @@
-import { SymbolType } from '../../symbol-type.ts'
-import { GameTurn } from '../../game-turn.ts'
+import { SymbolType } from '../../models/symbol-type.ts'
+import { GameTurn } from '../../models/game-turn.ts'
 
 interface GameBoardProps {
   gameTurns: GameTurn[]

@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react'
-import { SymbolType } from '../../symbol-type.ts'
+import { SymbolType } from '../../models/symbol-type.ts'
 
 export interface PlayerProps {
   initialName: string

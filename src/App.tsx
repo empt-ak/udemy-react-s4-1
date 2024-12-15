@@ -2,9 +2,9 @@ import Header from './components/Header/Header.tsx'
 import Player from './components/Player/Player.tsx'
 import GameBoard from './components/GameBoard/GameBoard.tsx'
 import { useState } from 'react'
-import { SymbolType } from './symbol-type.ts'
+import { SymbolType } from './models/symbol-type.ts'
 import Log from './components/Log/Log.tsx'
-import { GameTurn } from './game-turn.ts'
+import { GameTurn } from './models/game-turn.ts'
 
 const App = () => {
   const [gameTurns, setGameTurns] = useState<GameTurn[]>([])
@@ -44,7 +44,7 @@ const App = () => {
           <GameBoard gameTurns={gameTurns} onSelectSquare={handleSelectSquare}/>
         </div>
 
-        <Log />
+        <Log turns={gameTurns}/>
       </main>
     </>
   )
