@@ -5,15 +5,21 @@ export interface PlayerProps {
   initialName: string
   symbol: SymbolType
   isActive: boolean
+  nameChanged: (symbol: SymbolType, name: string) => void
 }
 
-const Player = ({ initialName, symbol, isActive }: PlayerProps) => {
+const Player = ({ initialName, symbol, isActive, nameChanged }: PlayerProps) => {
   const [name, setName] = useState<string>(initialName)
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const onClickHandler = () => {
+    if(isEditing) {
+      nameChanged(symbol, name)
+    }
     setIsEditing(previous => !previous)
+
+
   }
 
   const onNameChangeHandler = (x: FormEvent<HTMLInputElement>) => {
