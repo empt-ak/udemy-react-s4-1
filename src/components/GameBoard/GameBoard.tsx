@@ -1,9 +1,9 @@
-import { useState } from 'react'
 import { SymbolType } from '../../symbol-type.ts'
+import { GameTurn } from '../../game-turn.ts'
 
 interface GameBoardProps {
-  activeSymbol: SymbolType
-  onSelectSquare: () => void
+  gameTurns: GameTurn[]
+  onSelectSquare: (row: number, column: number) => void
 }
 
 const initialGameBoard: (SymbolType | null)[][] = [
@@ -11,30 +11,24 @@ const initialGameBoard: (SymbolType | null)[][] = [
   [null, null, null],
   [null, null, null],
 ]
-const GameBoard = ({onSelectSquare, activeSymbol} : GameBoardProps) => {
-  const [board, setBoard] = useState<(SymbolType | null)[][]>(initialGameBoard)
+const GameBoard = ({onSelectSquare, gameTurns} : GameBoardProps) => {
+  const gameBoard = initialGameBoard
 
-  const onClickHandler = (x: number, y: number) => {
-    setBoard(previous => {
-      const next = [...previous.map(oldRow => [...oldRow])]
+  for (const turn of gameTurns) {
+    const {square, symbol} = turn
 
-      next[x][y] = activeSymbol
-
-      return next
-    })
-
-    onSelectSquare()
+    gameBoard[square.row][square.col] = symbol
   }
 
   return (
     <ol id="game-board">
-      {board.map((row, r) => {
+      {gameBoard.map((row, r) => {
         return <li key={'r-' + r}>
           <ol>
             {
               row.map((cell, c) => {
                 return (<li key={'c-' + c}>
-                  <button onClick={() => onClickHandler(r, c)}>
+                  <button onClick={() => onSelectSquare(r, c)}>
                     {cell}
                   </button>
                 </li>)
