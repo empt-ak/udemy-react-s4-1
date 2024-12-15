@@ -26,7 +26,7 @@ const App = () => {
   const [gameTurns, setGameTurns] = useState<GameTurn[]>([])
 
   const activePlayer = getCurrentPlayer(gameTurns)
-  const gameBoard = initialGameBoard
+  const gameBoard = [...initialGameBoard.map(e => [...e])]
 
   for (const turn of gameTurns) {
     const {square, symbol} = turn
@@ -65,6 +65,10 @@ const App = () => {
     })
   }
 
+  const restartGame = () => {
+    setGameTurns([])
+  }
+
   return (
     <>
       <Header />
@@ -75,7 +79,7 @@ const App = () => {
             <Player initialName="Player 2" symbol="O" isActive={activePlayer === 'O'}/>
           </ol>
 
-          {(winner || hasDraw) && <GameOver symbol={winner} />}
+          {(winner || hasDraw) && <GameOver symbol={winner} resetClicked={restartGame}/>}
           <GameBoard board={gameBoard} onSelectSquare={handleSelectSquare}/>
         </div>
 
