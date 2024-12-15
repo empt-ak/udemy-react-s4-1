@@ -1,5 +1,6 @@
 import Header from './components/Header/Header.tsx'
 import Player from './components/Player/Player.tsx'
+import GameBoard from './components/GameBoard/GameBoard.tsx'
 
 const App = () => {
 
@@ -13,7 +14,7 @@ const App = () => {
             <Player initialName="Player 2" symbol="O" />
           </ol>
 
-          game board
+          <GameBoard />
         </div>
 
         log
