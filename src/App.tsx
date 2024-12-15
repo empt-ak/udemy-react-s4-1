@@ -6,22 +6,25 @@ import { SymbolType } from './models/symbol-type.ts'
 import Log from './components/Log/Log.tsx'
 import { GameTurn } from './models/game-turn.ts'
 
+const getCurrentPlayer = (turns: GameTurn[]) : SymbolType => {
+  if(turns.length && turns[0].symbol === 'X') {
+    return 'O'
+  }
+
+  return 'X'
+}
+
 const App = () => {
   const [gameTurns, setGameTurns] = useState<GameTurn[]>([])
-  const [activePlayer, setActivePlayer] = useState<SymbolType>('X')
+
+  const activePlayer = getCurrentPlayer(gameTurns)
 
   const handleSelectSquare = (row: number, col: number) => {
-    setActivePlayer(previous => previous === 'X' ? 'O' : 'X')
-
     setGameTurns(previous => {
-      let symbol: SymbolType = 'X'
-
-      if(previous.length && previous[0].symbol === 'X') {
-        symbol = 'O'
-      }
+      const symbol = getCurrentPlayer(previous)
 
       const turn : GameTurn = {
-        symbol: symbol,
+        symbol,
         square: {
           row, col
         }
